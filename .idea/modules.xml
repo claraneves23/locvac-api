@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/locvac.iml" filepath="$PROJECT_DIR$/.idea/locvac.iml" />
+      <module fileurl="file://$PROJECT_DIR$/locvac/locvac.iml" filepath="$PROJECT_DIR$/locvac/locvac.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/locvac-api.iml" filepath="$PROJECT_DIR$/.idea/locvac-api.iml" />
     </modules>
   </component>
 </project>
