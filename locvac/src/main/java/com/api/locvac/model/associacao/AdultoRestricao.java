@@ -2,6 +2,7 @@ package com.api.locvac.model.associacao;
 
 import com.api.locvac.model.core.Restricao;
 import com.api.locvac.model.core.Vacina;
+import com.api.locvac.model.id.AdultoRestricaoId;
 import com.api.locvac.model.id.VacinaRestricaoId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -9,12 +10,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 
 @Entity
-public class VacinaRestricao {
+public class AdultoRestricao {
+
     @EmbeddedId
-    private VacinaRestricaoId id;
+    private AdultoRestricaoId id;
 
     @ManyToOne
-    @MapsId("cdVacina")
+    @MapsId("cdAdulto")
     private Vacina vacina;
 
     @ManyToOne

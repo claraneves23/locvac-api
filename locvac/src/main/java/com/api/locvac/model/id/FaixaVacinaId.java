@@ -5,9 +5,8 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class CepaVacinaId implements Serializable {
+public class FaixaVacinaId implements Serializable {
 
+    private Long cdFaixa;
     private Long cdVacina;
-    private Long cdCepa;
-
 }

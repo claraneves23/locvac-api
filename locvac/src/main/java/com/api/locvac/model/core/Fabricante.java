@@ -10,8 +10,8 @@ public class Fabricante {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long cd_fabricante;
+        private Long cdFabricante;
 
-        private String nm_fabricante;
+        private String nmFabricante;
 
 }

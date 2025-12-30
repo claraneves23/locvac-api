@@ -17,11 +17,11 @@ public class Vacina {
     @JoinColumn(name = "cd_fabricante")
     private Fabricante fabricante;
 
-    private String nm_vacina;
-    private LocalDate dt_fabricacao;
-    private LocalDate dt_validade;
+    private String nmVacina;
+    private LocalDate dtFabricacao;
+    private LocalDate dtValidade;
 
     @Column(columnDefinition = "TEXT")
-    private String ds_vacina;
+    private String dsVacina;
 }
 
