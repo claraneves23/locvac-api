@@ -14,4 +14,18 @@ public class Fabricante {
 
         private String nmFabricante;
 
+        public Fabricante(){}
+
+        public Fabricante(Long cdFabricante, String nmFabricante) {
+                this.cdFabricante = cdFabricante;
+                this.nmFabricante = nmFabricante;
+        }
+
+        public Long getCdFabricante() {
+                return cdFabricante;
+        }
+
+        public String getNmFabricante() {
+                return nmFabricante;
+        }
 }

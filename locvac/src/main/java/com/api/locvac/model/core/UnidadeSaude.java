@@ -11,7 +11,8 @@ public class UnidadeSaude {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cdUnidade;
-
+    private Double latitude;
+    private Double longitude;
     private String nmUnidade;
     private String nmCep;
     private String dsEndereco;
