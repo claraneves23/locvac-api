@@ -9,4 +9,11 @@ public class FaixaVacinaId implements Serializable {
 
     private Long cdFaixa;
     private Long cdVacina;
+
+    public FaixaVacinaId(){}
+
+    public FaixaVacinaId(Long cdFaixa, Long cdVacina) {
+        this.cdFaixa = cdFaixa;
+        this.cdVacina = cdVacina;
+    }
 }

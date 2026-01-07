@@ -11,5 +11,4 @@ import java.util.List;
 @Repository
 public interface FaixaVacinaRepository extends JpaRepository<FaixaVacina, FaixaVacinaId> {
 
-    List<FaixaVacina> findByVacinaId(Long idVacina);
 }

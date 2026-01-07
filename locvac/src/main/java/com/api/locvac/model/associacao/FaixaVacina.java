@@ -20,4 +20,33 @@ public class FaixaVacina {
     @MapsId("cdFaixa")
     private FaixaEtaria faixaEtaria;
 
+
+
+    public FaixaVacina(FaixaEtaria faixaEtaria, Vacina vacina) {
+        this.faixaEtaria = faixaEtaria;
+        this.vacina = vacina;
+    }
+
+    public FaixaVacina() {}
+
+    public static FaixaVacina of(Vacina vacina, FaixaEtaria faixa) {
+        FaixaVacina fv = new FaixaVacina();
+        fv.id = new FaixaVacinaId(faixa.getId(), vacina.getId());
+        fv.vacina = vacina;
+        fv.faixaEtaria = faixa;
+        return fv;
+    }
+
+
+    public FaixaVacinaId getId() {
+        return id;
+    }
+
+    public Vacina getVacina() {
+        return vacina;
+    }
+
+    public FaixaEtaria getFaixaEtaria() {
+        return faixaEtaria;
+    }
 }

@@ -13,4 +13,18 @@ public class Restricao {
     private Long cdRestricao;
 
     private String dsRestricao;
+
+    public Restricao(String dsRestricao) {
+        this.dsRestricao = dsRestricao;
+    }
+
+    public Restricao() {}
+
+    public Long getCdRestricao() {
+        return cdRestricao;
+    }
+
+    public String getDsRestricao() {
+        return dsRestricao;
+    }
 }

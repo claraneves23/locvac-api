@@ -15,9 +15,32 @@ public class FaixaEtaria {
     private String descricao;
 
     @Column(name = "nr_idade_min")
-    private Integer idadeMinima;
+    private String idadeMinima;
 
     @Column(name = "nr_idade_max")
-    private Integer idadeMaxima;
+    private String idadeMaxima;
 
+    public FaixaEtaria(){}
+
+    public FaixaEtaria(String idadeMaxima, String descricao, String idadeMinima) {
+        this.idadeMaxima = idadeMaxima;
+        this.descricao = descricao;
+        this.idadeMinima = idadeMinima;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getIdadeMaxima() {
+        return idadeMaxima;
+    }
+
+    public String getIdadeMinima() {
+        return idadeMinima;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
 }

@@ -10,4 +10,11 @@ public class VacinaRestricaoId implements Serializable {
     private Long cdVacina;
     private Long cdRestricao;
 
+
+    public VacinaRestricaoId(Long cdVacina, Long cdRestricao) {
+        this.cdVacina = cdVacina;
+        this.cdRestricao = cdRestricao;
+    }
+
+    public VacinaRestricaoId() {}
 }

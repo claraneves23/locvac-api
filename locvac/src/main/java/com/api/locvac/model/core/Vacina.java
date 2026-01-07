@@ -17,7 +17,10 @@ public class Vacina {
     @JoinColumn(name = "cd_fabricante")
     private Fabricante fabricante;
 
-    private String nmVacina;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tipo_vacina_id")
+    private TipoVacina tipoVacina;
+
     private LocalDate dtFabricacao;
     private LocalDate dtValidade;
 
@@ -26,9 +29,9 @@ public class Vacina {
 
     public Vacina(){}
 
-    public Vacina(Fabricante fabricante, String nmVacina, LocalDate dtFabricacao, LocalDate dtValidade, String dsVacina) {
+    public Vacina(Fabricante fabricante, TipoVacina tipoVacina, LocalDate dtFabricacao, LocalDate dtValidade, String dsVacina) {
         this.fabricante = fabricante;
-        this.nmVacina = nmVacina;
+        this.tipoVacina = tipoVacina;
         this.dtFabricacao = dtFabricacao;
         this.dtValidade = dtValidade;
         this.dsVacina = dsVacina;
@@ -46,9 +49,7 @@ public class Vacina {
         return dtFabricacao;
     }
 
-    public String getNmVacina() {
-        return nmVacina;
-    }
+    public TipoVacina getTipoVacina() {return tipoVacina; }
 
     public LocalDate getDtValidade() {
         return dtValidade;

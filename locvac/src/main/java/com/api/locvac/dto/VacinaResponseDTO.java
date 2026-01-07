@@ -1,7 +1,5 @@
 package com.api.locvac.dto;
 
-import com.api.locvac.model.core.Fabricante;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,6 +10,7 @@ public record VacinaResponseDTO(
         LocalDate dtValidade,
         String nmFabricante,
         Integer quantidade,
-        List<String> faixaEtaria
+        List<String> faixaEtaria,
+        List<String> restricoes
 ) {
 }
