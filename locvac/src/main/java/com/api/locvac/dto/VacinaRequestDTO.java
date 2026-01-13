@@ -1,5 +1,7 @@
 package com.api.locvac.dto;
 
+import com.api.locvac.model.id.EstoqueVacinaId;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +13,7 @@ public record VacinaRequestDTO(
             LocalDate dtValidade,
             String dsVacina,
             List<Long> faixasEtariasIds,
-            List<Long> restricoesIds) {}
+            List<Long> restricoesIds,
+            List<Long> cepasIds) {}
 
 

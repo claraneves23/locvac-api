@@ -13,4 +13,18 @@ public class Cepa {
 
     @Column(name = "nm_cepa", nullable = false)
     private String nome;
+
+    public Cepa() {}
+
+    public Cepa(String nome) {
+        this.nome = nome;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

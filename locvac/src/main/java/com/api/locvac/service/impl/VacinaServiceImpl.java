@@ -1,9 +1,11 @@
 package com.api.locvac.service.impl;
 
 import com.api.locvac.dto.VacinaRequestDTO;
+import com.api.locvac.dto.VacinaResponseDTO;
 import com.api.locvac.mapper.VacinaMapper;
-import com.api.locvac.model.associacao.FaixaVacina;
-import com.api.locvac.model.associacao.VacinaRestricao;
+import com.api.locvac.model.associacao.TipoVacinaCepa;
+import com.api.locvac.model.associacao.TipoVacinaFaixa;
+import com.api.locvac.model.associacao.TipoVacinaRestricao;
 import com.api.locvac.model.core.*;
 import com.api.locvac.repository.*;
 import com.api.locvac.service.VacinaService;
@@ -16,23 +18,27 @@ import java.util.List;
 @Transactional
 public class VacinaServiceImpl implements VacinaService {
 
+    private final TipoVacinaFaixaRepository tipoVacinaFaixaRepository;
+    private final TipoVacinaRestricaoRepository tipoVacinaRestricaoRepository;
     private final VacinaRepository vacinaRepository;
     private final FabricanteRepository fabricanteRepository;
     private final TipoVacinaRepository tipoVacinaRepository;
     private final FaixaEtariaRepository faixaEtariaRepository;
-    private final FaixaVacinaRepository faixaVacinaRepository;
     private final RestricaoRepository restricaoRepository;
-    private final VacinaRestricaoRepository vacinaRestricaoRepository;
+    private final TipoVacinaCepaRepository tipoVacinaCepaRepository;
+    private final CepaRepository cepaRepository;
     private final VacinaMapper vacinaMapper;
 
-    public VacinaServiceImpl(VacinaRepository vacinaRepository, FabricanteRepository fabricanteRepository, TipoVacinaRepository tipoVacinaRepository, FaixaEtariaRepository faixaEtariaRepository, FaixaVacinaRepository faixaVacinaRepository, RestricaoRepository restricaoRepository, VacinaRestricaoRepository vacinaRestricaoRepository, VacinaMapper vacinaMapper) {
+    public VacinaServiceImpl(TipoVacinaFaixaRepository tipoVacinaFaixaRepository, TipoVacinaRestricaoRepository tipoVacinaRestricaoRepository, VacinaRepository vacinaRepository, FabricanteRepository fabricanteRepository, TipoVacinaRepository tipoVacinaRepository, FaixaEtariaRepository faixaEtariaRepository, RestricaoRepository restricaoRepository, TipoVacinaCepaRepository tipoVacinaCepaRepository, CepaRepository cepaRepository, VacinaMapper vacinaMapper) {
+        this.tipoVacinaFaixaRepository = tipoVacinaFaixaRepository;
+        this.tipoVacinaRestricaoRepository = tipoVacinaRestricaoRepository;
         this.vacinaRepository = vacinaRepository;
         this.fabricanteRepository = fabricanteRepository;
         this.tipoVacinaRepository = tipoVacinaRepository;
         this.faixaEtariaRepository = faixaEtariaRepository;
-        this.faixaVacinaRepository = faixaVacinaRepository;
         this.restricaoRepository = restricaoRepository;
-        this.vacinaRestricaoRepository = vacinaRestricaoRepository;
+        this.tipoVacinaCepaRepository = tipoVacinaCepaRepository;
+        this.cepaRepository = cepaRepository;
         this.vacinaMapper = vacinaMapper;
     }
 
@@ -45,9 +51,12 @@ public class VacinaServiceImpl implements VacinaService {
         validarVacinaDuplicada(dto, fabricante, tipoVacina);
         List<FaixaEtaria> faixas = buscarFaixasEtarias(dto.faixasEtariasIds());
         List<Restricao> restricoes = buscarRestricao(dto.restricoesIds());
+        List<Cepa> cepas = buscarCepa(dto.cepasIds());
         Vacina vacina = salvarVacina(dto, fabricante, tipoVacina);
-        associarFaixasEtarias(vacina, faixas);
-        associarRestricoes(vacina, restricoes);
+        associarFaixasEtarias(tipoVacina, faixas);
+        associarRestricoes(tipoVacina, restricoes);
+        associarCepas(tipoVacina, cepas);
+        vacinaRepository.save(vacina);
 
     }
 
@@ -60,7 +69,6 @@ public class VacinaServiceImpl implements VacinaService {
         return tipoVacinaRepository.findById(tipoVacinaId)
                 .orElseThrow(() -> new RuntimeException("Vacina não encontrada"));
     }
-
 
     private void validarVacinaDuplicada(VacinaRequestDTO dto, Fabricante fabricante, TipoVacina tipoVacina) {
         boolean existe = vacinaRepository
@@ -102,24 +110,50 @@ public class VacinaServiceImpl implements VacinaService {
         return restricoes;
     }
 
-    private void associarRestricoes(Vacina vacina, List<Restricao> restricoes){
+    private List<Cepa> buscarCepa(List<Long> ids) {
 
-        for(Restricao restricao : restricoes){
-            vacinaRestricaoRepository.save(VacinaRestricao.of(vacina, restricao));
+        List<Cepa> cepas = cepaRepository.findAllById(ids);
+
+        if (cepas.size() != ids.size()) {
+            throw new RuntimeException("Uma ou mais cepas não existem");
+        }
+
+        return cepas;
+    }
+
+    private void associarRestricoes(TipoVacina tipoVacina, List<Restricao> restricoes){
+
+        for (Restricao restricao : restricoes) {
+            tipoVacinaRestricaoRepository.save(
+                    TipoVacinaRestricao.of(tipoVacina, restricao)
+            );
         }
     }
 
-    private void associarFaixasEtarias(Vacina vacina, List<FaixaEtaria> faixas){
+    private void associarFaixasEtarias(TipoVacina tipoVacina, List<FaixaEtaria> faixas){
 
-        for(FaixaEtaria faixa : faixas){
-            faixaVacinaRepository.save(FaixaVacina.of(vacina, faixa));
+        for (FaixaEtaria faixa : faixas) {
+            tipoVacinaFaixaRepository.save(
+                    TipoVacinaFaixa.of(tipoVacina, faixa)
+            );
+        }
+    }
+
+    private void associarCepas(TipoVacina tipoVacina, List<Cepa> cepas){
+
+        for (Cepa cepa : cepas) {
+            tipoVacinaCepaRepository.save(
+                    TipoVacinaCepa.of(tipoVacina, cepa)
+            );
         }
     }
 
     @Override
-    public List<Vacina> listarVacinas() {
-        return vacinaRepository.findAll();
-
+    public List<VacinaResponseDTO> listarVacinas() {
+        return vacinaRepository.findAll()
+                .stream()
+                .map(vacinaMapper::toResponse)
+                .toList();
     }
 
 

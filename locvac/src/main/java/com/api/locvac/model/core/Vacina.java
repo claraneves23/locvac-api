@@ -1,8 +1,10 @@
 package com.api.locvac.model.core;
 
+import com.api.locvac.model.associacao.EstoqueVacina;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "vacina")
@@ -20,6 +22,9 @@ public class Vacina {
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipo_vacina_id")
     private TipoVacina tipoVacina;
+
+    @OneToMany(mappedBy = "vacina", fetch = FetchType.LAZY)
+    private List<EstoqueVacina> estoques;
 
     private LocalDate dtFabricacao;
     private LocalDate dtValidade;

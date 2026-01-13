@@ -22,5 +22,46 @@ public class EstoqueVacina {
 
     @Column(name = "qt_disponivel")
     private Integer quantidade;
+
+    public EstoqueVacina() {}
+
+    public EstoqueVacina(Integer quantidade, UnidadeSaude unidadeSaude, Vacina vacina) {
+        this.quantidade = quantidade;
+        this.unidadeSaude = unidadeSaude;
+        this.vacina = vacina;
+    }
+
+    public static EstoqueVacina of(UnidadeSaude unidadeSaude, Vacina vacina, Integer quantidade){
+        EstoqueVacina ev = new EstoqueVacina();
+
+        ev.id = new EstoqueVacinaId(unidadeSaude.getCdUnidade(),
+                vacina.getId());
+
+        ev.unidadeSaude = unidadeSaude;
+        ev.vacina = vacina;
+        ev.quantidade = quantidade;
+
+        return ev;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public EstoqueVacinaId getId() {
+        return id;
+    }
+
+    public Vacina getVacina() {
+        return vacina;
+    }
+
+    public UnidadeSaude getUnidadeSaude() {
+        return unidadeSaude;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 }
 

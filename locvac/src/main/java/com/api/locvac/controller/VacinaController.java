@@ -1,6 +1,7 @@
 package com.api.locvac.controller;
 
 import com.api.locvac.dto.VacinaRequestDTO;
+import com.api.locvac.dto.VacinaResponseDTO;
 import com.api.locvac.model.core.Vacina;
 import com.api.locvac.service.VacinaService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class VacinaController {
     }
 
     @GetMapping
-    public List<Vacina> listarVacinas() {
+    public List<VacinaResponseDTO> listarVacinas() {
         return vacinaService.listarVacinas();
     }
 
