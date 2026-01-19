@@ -5,6 +5,7 @@ import com.api.locvac.model.associacao.TipoVacinaFaixa;
 import com.api.locvac.model.associacao.TipoVacinaRestricao;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,22 +18,23 @@ public class TipoVacina {
 
     private String nmVacina;
 
-    @OneToMany(mappedBy = "tipoVacina", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TipoVacinaFaixa> faixasEtarias;
+    @Column(columnDefinition = "TEXT")
+    private String dsTipoVacina;
 
     @OneToMany(mappedBy = "tipoVacina", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TipoVacinaRestricao> restricoes;
+    private List<TipoVacinaFaixa> faixasEtarias = new ArrayList<>();
 
     @OneToMany(mappedBy = "tipoVacina", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TipoVacinaCepa> cepas;
+    private List<TipoVacinaRestricao> restricoes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tipoVacina", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TipoVacinaCepa> cepas = new ArrayList<>();
 
     public TipoVacina(){}
 
-    public TipoVacina(List<TipoVacinaCepa> cepas, List<TipoVacinaRestricao> restricoes, List<TipoVacinaFaixa> faixasEtarias, String nmVacina) {
-        this.cepas = cepas;
-        this.restricoes = restricoes;
-        this.faixasEtarias = faixasEtarias;
+    public TipoVacina(String nmVacina, String dsTipoVacina) {
         this.nmVacina = nmVacina;
+        this.dsTipoVacina = dsTipoVacina;
     }
 
     public Long getCdTipoVacina() {
@@ -43,14 +45,15 @@ public class TipoVacina {
         return nmVacina;
     }
 
+    public String getDsTipoVacina() { return dsTipoVacina; }
+
     public List<TipoVacinaFaixa> getFaixasEtarias() {
         return faixasEtarias;
     }
+
     public List<TipoVacinaRestricao> getRestricoes() {
         return restricoes;
     }
 
-    public List<TipoVacinaCepa> getCepas() {
-        return cepas;
-    }
+    public List<TipoVacinaCepa> getCepas() { return cepas; }
 }

@@ -8,9 +8,6 @@ public record VacinaResponseDTO(
         String nmVacina,
         LocalDate dtFabricacao,
         LocalDate dtValidade,
-        String nmFabricante,
-        List<String> faixaEtaria,
-        List<String> restricoes,
-        List<String> cepas
+        String nmFabricante
 ) {
 }

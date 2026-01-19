@@ -1,11 +1,8 @@
 package com.api.locvac.dto;
 
-import com.api.locvac.model.core.Cepa;
-
 import java.time.LocalDate;
 import java.util.List;
 
-//lembrar de ver as anotacoes
 public record VacinaPorUnidadeResponseDTO(
         Long vacinaId,
         String nmVacina,
@@ -17,5 +14,4 @@ public record VacinaPorUnidadeResponseDTO(
         List<String> cepas
 ) {}
 
-// terminar estoque
 

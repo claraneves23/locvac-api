@@ -20,9 +20,6 @@ import java.util.List;
 @Transactional
 public class EstoqueVacinaServiceImpl implements EstoqueVacinaService {
 
-    //retirar as relacoes vacina faixa etaria e restricoes
-    //testar de novo
-    //
     private final EstoqueVacinaRepository estoqueVacinaRepository;
     private final VacinaRepository vacinaRepository;
     private final VacinaMapper vacinaMapper;

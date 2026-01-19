@@ -1,12 +1,8 @@
 package com.api.locvac.controller;
 
 import com.api.locvac.dto.EstoqueVacinaRequestDTO;
-import com.api.locvac.dto.UnidadeSaudeRequestDTO;
 import com.api.locvac.dto.VacinaPorUnidadeResponseDTO;
-import com.api.locvac.model.associacao.EstoqueVacina;
-import com.api.locvac.model.core.UnidadeSaude;
 import com.api.locvac.service.EstoqueVacinaService;
-import com.api.locvac.service.UnidadeSaudeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -10,10 +10,7 @@ public record VacinaRequestDTO(
             Long tipoVacinaId,
             Long fabricanteId,
             LocalDate dtFabricacao,
-            LocalDate dtValidade,
-            String dsVacina,
-            List<Long> faixasEtariasIds,
-            List<Long> restricoesIds,
-            List<Long> cepasIds) {}
+            LocalDate dtValidade)
+{}
 
 

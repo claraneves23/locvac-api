@@ -29,17 +29,13 @@ public class Vacina {
     private LocalDate dtFabricacao;
     private LocalDate dtValidade;
 
-    @Column(columnDefinition = "TEXT")
-    private String dsVacina;
-
     public Vacina(){}
 
-    public Vacina(Fabricante fabricante, TipoVacina tipoVacina, LocalDate dtFabricacao, LocalDate dtValidade, String dsVacina) {
+    public Vacina(Fabricante fabricante, TipoVacina tipoVacina, LocalDate dtFabricacao, LocalDate dtValidade) {
         this.fabricante = fabricante;
         this.tipoVacina = tipoVacina;
         this.dtFabricacao = dtFabricacao;
         this.dtValidade = dtValidade;
-        this.dsVacina = dsVacina;
     }
 
     public Long getId() {
@@ -60,8 +56,5 @@ public class Vacina {
         return dtValidade;
     }
 
-    public String getDsVacina() {
-        return dsVacina;
-    }
 }
 

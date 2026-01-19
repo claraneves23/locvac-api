@@ -20,8 +20,7 @@ public class VacinaMapper {
                 fabricante,
                 tipoVacina,
                 dto.dtFabricacao(),
-                dto.dtValidade(),
-                dto.dsVacina()
+                dto.dtValidade()
         );
     }
 
@@ -33,10 +32,7 @@ public class VacinaMapper {
                 tipo.getNmVacina(),
                 vacina.getDtFabricacao(),
                 vacina.getDtValidade(),
-                vacina.getFabricante().getNmFabricante(),
-                getFaixas(tipo),
-                getRestricoes(tipo),
-                getCepas(tipo)
+                vacina.getFabricante().getNmFabricante()
         );
     }
 
