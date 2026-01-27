@@ -11,6 +11,9 @@ public interface TipoVacinaService {
 
     List<TipoVacinaResponseDTO> listarTiposVacina();
 
+    TipoVacinaResponseDTO filtrarPorNome(String nmVacina);
 
     TipoVacinaResponseDTO buscarPorId(Long id);
+
+    void removerTipoVacina(Long tipoVacinaId);
 }

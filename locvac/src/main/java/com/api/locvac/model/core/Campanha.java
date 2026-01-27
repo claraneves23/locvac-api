@@ -1,8 +1,11 @@
 package com.api.locvac.model.core;
 
+import com.api.locvac.model.associacao.CampanhaUnidade;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Campanha {
@@ -17,6 +20,9 @@ public class Campanha {
 
     private LocalDate dtComecoCampanha;
     private LocalDate dtFimCampanha;
+
+    @OneToMany(mappedBy = "campanha", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CampanhaUnidade> unidades = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "cd_tipo_vacina", nullable = false)
@@ -53,5 +59,9 @@ public class Campanha {
 
     public String getDsCampanha() {
         return dsCampanha;
+    }
+
+    public List<CampanhaUnidade> getUnidades() {
+        return unidades;
     }
 }

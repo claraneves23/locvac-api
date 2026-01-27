@@ -29,7 +29,23 @@ public class TipoVacinaController {
     }
 
     @GetMapping
-    public List<TipoVacinaResponseDTO> listarUnidades() {
+    public List<TipoVacinaResponseDTO> listarTipoVacinas() {
         return tipoVacinaService.listarTiposVacina();
+    }
+
+    @DeleteMapping("/deletaTipoVacina/{id}")
+    public ResponseEntity<Void> deletaTipoVacina(@PathVariable Long id) {
+        tipoVacinaService.removerTipoVacina(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<TipoVacinaResponseDTO> buscarPorId(@PathVariable Long id){
+        return ResponseEntity.ok(tipoVacinaService.buscarPorId(id));
+    }
+
+    @GetMapping("/nome/{nomeVacina}")
+    public ResponseEntity<TipoVacinaResponseDTO> filtrarPorNome(@PathVariable String nomeVacina){
+        return ResponseEntity.ok(tipoVacinaService.filtrarPorNome(nomeVacina));
     }
 }

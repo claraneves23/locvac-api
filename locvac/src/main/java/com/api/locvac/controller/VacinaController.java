@@ -32,5 +32,10 @@ public class VacinaController {
         return vacinaService.listarVacinas();
     }
 
+    @DeleteMapping("/deletaVacina/{id}")
+    public ResponseEntity<Void> deletaVacina(@PathVariable Long id) {
+        vacinaService.removerVacina(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

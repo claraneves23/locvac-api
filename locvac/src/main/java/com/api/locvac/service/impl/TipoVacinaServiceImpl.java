@@ -118,10 +118,29 @@ public class TipoVacinaServiceImpl implements TipoVacinaService {
     }
 
     @Override
+    public TipoVacinaResponseDTO filtrarPorNome(String nmVacina) {
+        TipoVacina tipoVacina = tipoVacinaRepository.findByNmVacinaContainingIgnoreCase(nmVacina)
+                .orElseThrow(() -> new RuntimeException("Tipo de vacina não encontrado"));
+
+        return tipoVacinaMapper.toResponse(tipoVacina);
+    }
+
+    @Override
     public TipoVacinaResponseDTO buscarPorId(Long id) {
         TipoVacina tipoVacina = tipoVacinaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tipo de vacina não encontrado"));
 
         return tipoVacinaMapper.toResponse(tipoVacina);
     }
+
+    @Override
+    public void removerTipoVacina(Long tipoVacinaId){
+        if(!tipoVacinaRepository.existsById(tipoVacinaId)){
+            throw new RuntimeException("Vacina não existe");
+        }
+
+        tipoVacinaRepository.deleteById(tipoVacinaId);
+    }
+
+
 }

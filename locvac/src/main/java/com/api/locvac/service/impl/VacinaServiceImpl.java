@@ -3,9 +3,6 @@ package com.api.locvac.service.impl;
 import com.api.locvac.dto.VacinaRequestDTO;
 import com.api.locvac.dto.VacinaResponseDTO;
 import com.api.locvac.mapper.VacinaMapper;
-import com.api.locvac.model.associacao.TipoVacinaCepa;
-import com.api.locvac.model.associacao.TipoVacinaFaixa;
-import com.api.locvac.model.associacao.TipoVacinaRestricao;
 import com.api.locvac.model.core.*;
 import com.api.locvac.repository.*;
 import com.api.locvac.service.VacinaService;
@@ -40,6 +37,15 @@ public class VacinaServiceImpl implements VacinaService {
         Vacina vacina = salvarVacina(dto, fabricante, tipoVacina);
         vacinaRepository.save(vacina);
 
+    }
+
+    @Override
+    public void removerVacina(Long vacinaId){
+
+        if(!vacinaRepository.existsById(vacinaId)){
+            throw new RuntimeException("Vacina não existe");
+        }
+        vacinaRepository.deleteById(vacinaId);
     }
 
     private Fabricante buscarFabricante(Long fabricanteId) {

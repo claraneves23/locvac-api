@@ -2,6 +2,7 @@ package com.api.locvac.service.impl;
 
 import com.api.locvac.dto.CampanhaRequestDTO;
 import com.api.locvac.dto.CampanhaResponseDTO;
+import com.api.locvac.dto.TipoVacinaResponseDTO;
 import com.api.locvac.mapper.CampanhaMapper;
 import com.api.locvac.model.associacao.CampanhaUnidade;
 import com.api.locvac.model.core.*;
@@ -18,14 +19,12 @@ public class CampanhaServiceImpl implements CampanhaService {
 
     private final CampanhaMapper campanhaMapper;
     private final CampanhaRepository campanhaRepository;
-    private final CampanhaUnidadeRepository campanhaUnidadeRepository;
     private final UnidadeSaudeRepository unidadeSaudeRepository;
     private final TipoVacinaRepository tipoVacinaRepository;
 
-    public CampanhaServiceImpl(CampanhaMapper campanhaMapper, CampanhaRepository campanhaRepository, CampanhaUnidadeRepository campanhaUnidadeRepository, UnidadeSaudeRepository unidadeSaudeRepository, TipoVacinaRepository tipoVacinaRepository) {
+    public CampanhaServiceImpl(CampanhaMapper campanhaMapper, CampanhaRepository campanhaRepository, UnidadeSaudeRepository unidadeSaudeRepository, TipoVacinaRepository tipoVacinaRepository) {
         this.campanhaMapper = campanhaMapper;
         this.campanhaRepository = campanhaRepository;
-        this.campanhaUnidadeRepository = campanhaUnidadeRepository;
         this.unidadeSaudeRepository = unidadeSaudeRepository;
         this.tipoVacinaRepository = tipoVacinaRepository;
     }
@@ -33,16 +32,12 @@ public class CampanhaServiceImpl implements CampanhaService {
 
     @Override
     public void cadastrarCampanha(CampanhaRequestDTO dto) {
-
         TipoVacina tipoVacina = buscarTipoVacina(dto.tipoVacinaId());
-        List<UnidadeSaude> unidadeSaudes = buscarUnidadeSaude(dto.unidadesIds());
+        List<UnidadeSaude> unidades = buscarUnidadeSaude(dto.unidadesIds());
 
-        Campanha campanha = campanhaMapper.toEntity(dto, tipoVacina);
+        Campanha campanha = campanhaMapper.toEntity(dto, tipoVacina, unidades);
+
         campanhaRepository.save(campanha);
-
-        List<CampanhaUnidade> campanhaUnidades = associarUnidades(campanha, unidadeSaudes);
-
-        campanhaUnidadeRepository.saveAll(campanhaUnidades);
 
     }
 
@@ -50,21 +45,29 @@ public class CampanhaServiceImpl implements CampanhaService {
     public List<CampanhaResponseDTO> listarCampanhas() {
         return campanhaRepository.findAll()
                 .stream()
-                .map(this::montarResponseCampanha)
+                .map(campanhaMapper::toResponse)
                 .toList();
     }
 
-    private CampanhaResponseDTO montarResponseCampanha(Campanha campanha) {
+    @Override
+    public Campanha filtrarPorNome(String nome) {
+        return campanhaRepository.findCampanhaByNmCampanhaContainingIgnoreCase(nome)
+                .orElseThrow(() -> new RuntimeException("Campanha não encontrada"));
+    }
 
-        String tipoVacina = campanha.getTipoVacina().getNmVacina();
+    @Override
+    public Campanha buscarPorId(Long id) {
+        return campanhaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campanha não encontrada"));
+    }
 
-        List<String> unidades = campanhaUnidadeRepository
-                .findByCampanha(campanha)
-                .stream()
-                .map(cu -> cu.getUnidadeSaude().getNmUnidade())
-                .toList();
 
-        return campanhaMapper.toResponse(campanha, tipoVacina, unidades);
+    @Override
+    public void removerCampanha(Long campanhaId){
+        Campanha campanha = campanhaRepository.findById(campanhaId)
+                .orElseThrow(() -> new RuntimeException("Campanha não existe"));
+
+        campanhaRepository.delete(campanha);
     }
 
 
@@ -89,7 +92,5 @@ public class CampanhaServiceImpl implements CampanhaService {
                 .map(unidade -> CampanhaUnidade.of(campanha, unidade))
                 .toList();
     }
-
-
 
 }

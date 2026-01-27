@@ -1,7 +1,9 @@
 package com.api.locvac.service.impl;
 
 import com.api.locvac.dto.UnidadeSaudeRequestDTO;
+import com.api.locvac.dto.UnidadeSaudeResponseDTO;
 import com.api.locvac.mapper.UnidadeSaudeMapper;
+import com.api.locvac.model.core.TipoVacina;
 import com.api.locvac.model.core.UnidadeSaude;
 import com.api.locvac.repository.UnidadeSaudeRepository;
 import com.api.locvac.service.UnidadeSaudeService;
@@ -29,8 +31,27 @@ public class UnidadeSaudeServiceImpl implements UnidadeSaudeService {
     }
 
     @Override
-    public List<UnidadeSaude> listarUnidade() {
-        return unidadeSaudeRepository.findAll();
+    public List<UnidadeSaudeResponseDTO> listarUnidade() {
+        return unidadeSaudeRepository.findAll()
+                .stream()
+                .map(unidadeSaudeMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    public UnidadeSaudeResponseDTO buscarPorId(Long id) {
+        UnidadeSaude unidadeSaude = unidadeSaudeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
+
+        return unidadeSaudeMapper.toResponse(unidadeSaude);
+    }
+
+    @Override
+    public UnidadeSaudeResponseDTO filtrarPorNome(String nmUnidade) {
+        UnidadeSaude unidadeSaude = unidadeSaudeRepository.findUnidadeSaudeByNmUnidadeContainingIgnoreCase(nmUnidade)
+                .orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
+
+        return unidadeSaudeMapper.toResponse(unidadeSaude);
     }
 
     private void validarUnidadeDuplicada(UnidadeSaudeRequestDTO dto){
@@ -48,4 +69,15 @@ public class UnidadeSaudeServiceImpl implements UnidadeSaudeService {
 
     }
 
-}
+    @Override
+    public void removerUnidadeSaude(Long unidadeSaudeId){
+
+        if(!unidadeSaudeRepository.existsById(unidadeSaudeId)){
+            throw new RuntimeException("Unidade Saude não existe");
+        }
+
+        unidadeSaudeRepository.deleteById(unidadeSaudeId);
+
+    }
+
+    }

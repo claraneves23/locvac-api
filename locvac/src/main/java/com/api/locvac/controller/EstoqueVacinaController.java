@@ -33,4 +33,10 @@ public class EstoqueVacinaController {
         return estoqueVacinaService.listarVacinasPorUnidade(unidadeId);
     }
 
+    @DeleteMapping("/vacinas/{vacinaId}/unidades/{unidadeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removerVacinaDaUnidade(@PathVariable Long vacinaId, @PathVariable Long unidadeId) {
+        estoqueVacinaService.removerVacinaDaUnidade(vacinaId, unidadeId);
+    }
+
 }

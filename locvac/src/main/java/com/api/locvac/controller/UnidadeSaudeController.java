@@ -1,6 +1,8 @@
 package com.api.locvac.controller;
 
+import com.api.locvac.dto.TipoVacinaResponseDTO;
 import com.api.locvac.dto.UnidadeSaudeRequestDTO;
+import com.api.locvac.dto.UnidadeSaudeResponseDTO;
 import com.api.locvac.model.core.UnidadeSaude;
 import com.api.locvac.service.UnidadeSaudeService;
 import jakarta.validation.Valid;
@@ -27,7 +29,18 @@ public class UnidadeSaudeController{
     }
 
     @GetMapping
-    public List<UnidadeSaude> listarUnidades() {
+    public List<UnidadeSaudeResponseDTO> listarUnidades() {
         return unidadeSaudeService.listarUnidade();
+    }
+
+    @DeleteMapping("/deletaUnidade/{id}")
+    public ResponseEntity<Void> deletaUnidade(@PathVariable Long id) {
+        unidadeSaudeService.removerUnidadeSaude(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("id/{id}")
+    public ResponseEntity<UnidadeSaudeResponseDTO> buscarPorId(@PathVariable Long id){
+        return ResponseEntity.ok(unidadeSaudeService.buscarPorId(id));
     }
 }

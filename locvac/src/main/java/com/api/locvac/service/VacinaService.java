@@ -10,5 +10,7 @@ public interface VacinaService {
 
     public void cadastrarVacina(VacinaRequestDTO dto);
 
+    void removerVacina(Long vacinaId);
+
     public List<VacinaResponseDTO> listarVacinas();
 }
