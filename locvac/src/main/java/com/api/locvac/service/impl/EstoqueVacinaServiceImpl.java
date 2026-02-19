@@ -46,31 +46,28 @@ public class EstoqueVacinaServiceImpl implements EstoqueVacinaService {
 
         EstoqueVacinaId id = new EstoqueVacinaId(vacina.getId(), unidadeSaude.getCdUnidade());
 
-        if (estoqueVacinaRepository.existsById(id)){
-            throw new RuntimeException("Estoque já existe");
-        }
+        validarQueEstoqueNaoExiste(id);
 
         EstoqueVacina estoqueVacina = EstoqueVacina.of(unidadeSaude, vacina, dto.quantidade());
 
         estoqueVacinaRepository.save(estoqueVacina);
 
+        atualizarDisponibilidadeVacina(vacina);
     }
 
     @Override
-    public void atualizarQuantidadeEstoque(EstoqueVacinaRequestDTO dto) {
+    public void atualizarQuantidadeEstoque(Long vacinaId, Long unidadeId, Integer quantidade) {
+        Vacina vacina = buscarVacina(vacinaId);
 
-        Vacina vacina = buscarVacina(dto.vacinaId());
-
-        UnidadeSaude unidadeSaude = buscarUnidadeSaude(dto.unidadeId());
+        UnidadeSaude unidadeSaude = buscarUnidadeSaude(unidadeId);
 
         EstoqueVacinaId id = new EstoqueVacinaId(vacina.getId(), unidadeSaude.getCdUnidade());
 
-        EstoqueVacina estoqueVacina = estoqueVacinaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+        EstoqueVacina estoqueVacina = buscarEstoque(id);
 
-        estoqueVacina.setQuantidade(dto.quantidade());
+        estoqueVacina.setQuantidade(quantidade);
 
-        estoqueVacinaRepository.save(estoqueVacina);
+        atualizarDisponibilidadeVacina(vacina);
     }
 
     @Override
@@ -78,22 +75,30 @@ public class EstoqueVacinaServiceImpl implements EstoqueVacinaService {
 
         EstoqueVacinaId id = new EstoqueVacinaId(vacinaId, unidadeId);
 
-        if (!estoqueVacinaRepository.existsById(id)) {
-            throw new RuntimeException("Estoque não encontrado");
-        }
+        EstoqueVacina estoqueVacina = buscarEstoque(id);
 
-        estoqueVacinaRepository.deleteById(id);
+        Vacina vacina = estoqueVacina.getVacina();
+
+        estoqueVacinaRepository.delete(estoqueVacina);
+
+        atualizarDisponibilidadeVacina(vacina);
+
+
     }
 
     @Override
     public List<VacinaPorUnidadeResponseDTO> listarVacinasPorUnidade(Long unidadeId) {
         UnidadeSaude unidade = buscarUnidadeSaude(unidadeId);
-
-
         return estoqueVacinaRepository.findByUnidadeSaude(unidade)
                 .stream()
                 .map(vacinaMapper::toPorUnidade)
                 .toList();
+    }
+
+    private void atualizarDisponibilidadeVacina(Vacina vacina) {
+
+        int total = estoqueVacinaRepository.somarQuantidadePorVacina(vacina);
+        vacina.setDisponibilidade(total > 0);
     }
 
     private Vacina buscarVacina(Long id){
@@ -105,4 +110,18 @@ public class EstoqueVacinaServiceImpl implements EstoqueVacinaService {
         return unidadeSaudeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
     }
+
+    private void validarQueEstoqueNaoExiste(EstoqueVacinaId id) {
+        if (estoqueVacinaRepository.existsById(id)) {
+            throw new RuntimeException("Estoque já existe");
+        }
+    }
+
+    private EstoqueVacina buscarEstoque(EstoqueVacinaId id) {
+        return estoqueVacinaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+    }
+
+
+
 }

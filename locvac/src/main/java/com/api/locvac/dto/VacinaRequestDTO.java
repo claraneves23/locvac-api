@@ -1,16 +1,22 @@
 package com.api.locvac.dto;
 
-import com.api.locvac.model.id.EstoqueVacinaId;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.util.List;
 
-//quantidade e arrumar o mapper
 public record VacinaRequestDTO(
+            @NotNull
             Long tipoVacinaId,
+
+            @NotNull
             Long fabricanteId,
+
+            @NotNull
             LocalDate dtFabricacao,
-            LocalDate dtValidade)
+
+            @NotNull
+            LocalDate dtValidade
+)
 {}
 
 

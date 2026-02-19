@@ -1,16 +1,18 @@
 package com.api.locvac.service;
 
+import com.api.locvac.dto.VacinaPatchDTO;
 import com.api.locvac.dto.VacinaRequestDTO;
 import com.api.locvac.dto.VacinaResponseDTO;
-import com.api.locvac.model.core.Vacina;
 
 import java.util.List;
 
 public interface VacinaService {
 
-    public void cadastrarVacina(VacinaRequestDTO dto);
+    void cadastrarVacina(VacinaRequestDTO dto);
 
     void removerVacina(Long vacinaId);
 
-    public List<VacinaResponseDTO> listarVacinas();
+    List<VacinaResponseDTO> listarVacinas();
+
+    void atualizarVacina(Long vacinaId, VacinaPatchDTO vacinaAtualizada);
 }

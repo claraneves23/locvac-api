@@ -1,12 +1,8 @@
 package com.api.locvac.controller;
 
-import com.api.locvac.dto.CampanhaRequestDTO;
-import com.api.locvac.dto.CampanhaResponseDTO;
-import com.api.locvac.dto.TipoVacinaResponseDTO;
-import com.api.locvac.dto.UnidadeSaudeRequestDTO;
+import com.api.locvac.dto.*;
 import com.api.locvac.mapper.CampanhaMapper;
 import com.api.locvac.model.core.Campanha;
-import com.api.locvac.model.core.UnidadeSaude;
 import com.api.locvac.service.CampanhaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -51,11 +47,16 @@ public class CampanhaController {
         return ResponseEntity.ok(campanhaMapper.toResponse(campanha));
     }
 
-    @GetMapping("/nome/{nmCampanha}")
+    @GetMapping("/nomeCampanha/{nmCampanha}")
     public ResponseEntity<CampanhaResponseDTO> filtrarPorNome(@PathVariable String nmCampanha){
         Campanha campanha = campanhaService.filtrarPorNome(nmCampanha);
         return ResponseEntity.ok(campanhaMapper.toResponse(campanha));
     }
 
+    @PatchMapping("/atualizaCampanha/{id}")
+    public ResponseEntity<Void> atualizaCampanha(@PathVariable Long id, @RequestBody @Valid CampanhaPatchDTO dto) {
+        campanhaService.atualizarCampanha(id,dto);
+        return ResponseEntity.noContent().build();
+    }
 
 }

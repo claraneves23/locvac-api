@@ -1,8 +1,9 @@
 package com.api.locvac.controller;
 
+import com.api.locvac.dto.UnidadeSaudePatchDTO;
+import com.api.locvac.dto.VacinaPatchDTO;
 import com.api.locvac.dto.VacinaRequestDTO;
 import com.api.locvac.dto.VacinaResponseDTO;
-import com.api.locvac.model.core.Vacina;
 import com.api.locvac.service.VacinaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,12 @@ public class VacinaController {
     @DeleteMapping("/deletaVacina/{id}")
     public ResponseEntity<Void> deletaVacina(@PathVariable Long id) {
         vacinaService.removerVacina(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/atualizaVacina/{id}")
+    public ResponseEntity<Void> atualizaVacina(@PathVariable Long id, @RequestBody @Valid VacinaPatchDTO dto) {
+        vacinaService.atualizarVacina(id,dto);
         return ResponseEntity.noContent().build();
     }
 

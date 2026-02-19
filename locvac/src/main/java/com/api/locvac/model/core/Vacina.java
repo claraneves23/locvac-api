@@ -28,6 +28,7 @@ public class Vacina {
 
     private LocalDate dtFabricacao;
     private LocalDate dtValidade;
+    private boolean disponibilidade;
 
     public Vacina(){}
 
@@ -56,5 +57,23 @@ public class Vacina {
         return dtValidade;
     }
 
-}
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
+    }
 
+    public void setTipoVacina(TipoVacina tipoVacina) {
+        this.tipoVacina = tipoVacina;
+    }
+
+    public void setDisponibilidade(boolean disponibilidade) {
+        this.disponibilidade = disponibilidade;
+    }
+
+    public boolean isDisponibilidade() {
+        return disponibilidade;
+    }
+
+    public List<EstoqueVacina> getEstoques() {
+        return estoques;
+    }
+}

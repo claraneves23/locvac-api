@@ -1,16 +1,19 @@
 package com.api.locvac.service.impl;
 
+import com.api.locvac.dto.CampanhaPatchDTO;
 import com.api.locvac.dto.CampanhaRequestDTO;
 import com.api.locvac.dto.CampanhaResponseDTO;
-import com.api.locvac.dto.TipoVacinaResponseDTO;
 import com.api.locvac.mapper.CampanhaMapper;
 import com.api.locvac.model.associacao.CampanhaUnidade;
 import com.api.locvac.model.core.*;
 import com.api.locvac.repository.*;
 import com.api.locvac.service.CampanhaService;
+import com.api.locvac.utils.ValidacaoPeriodoUtils;
+import com.api.locvac.utils.AssociacaoUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,7 +37,8 @@ public class CampanhaServiceImpl implements CampanhaService {
     public void cadastrarCampanha(CampanhaRequestDTO dto) {
         TipoVacina tipoVacina = buscarTipoVacina(dto.tipoVacinaId());
         List<UnidadeSaude> unidades = buscarUnidadeSaude(dto.unidadesIds());
-
+        ValidacaoPeriodoUtils.validarDataFinalPosterior(dto.dataInicio(), dto.dataFim());
+        validarCampanhaDuplicada(dto.nome(), tipoVacina, dto.dataInicio(), dto.dataFim(), null);
         Campanha campanha = campanhaMapper.toEntity(dto, tipoVacina, unidades);
 
         campanhaRepository.save(campanha);
@@ -70,6 +74,54 @@ public class CampanhaServiceImpl implements CampanhaService {
         campanhaRepository.delete(campanha);
     }
 
+    @Override
+    public void atualizarCampanha(Long campanhaId, CampanhaPatchDTO campanhaAtualizada) {
+        Campanha campanha =  campanhaRepository.findById(campanhaId)
+                .orElseThrow(() -> new RuntimeException("Campanha não encontrada"));
+
+        if (campanhaAtualizada.nome() != null) {
+            campanha.setNmCampanha(campanhaAtualizada.nome());
+        }
+
+        if (campanhaAtualizada.dataInicio() != null) {
+            campanha.setDtComecoCampanha(campanhaAtualizada.dataInicio());
+        }
+
+        if (campanhaAtualizada.dataFim() != null) {
+            campanha.setDtFimCampanha(campanhaAtualizada.dataFim());
+        }
+
+        if (campanhaAtualizada.tipoVacinaId() != null) {
+            TipoVacina tipoVacina = buscarTipoVacina(campanhaAtualizada.tipoVacinaId());
+            campanha.setTipoVacina(tipoVacina);
+        }
+
+        if (campanhaAtualizada.unidadesIds() != null) {
+            AssociacaoUtils.atualizar(
+                    campanha.getUnidades(),
+                    campanhaAtualizada.unidadesIds(),
+                    cu -> cu.getUnidadeSaude().getCdUnidade(),
+                    unidadeSaudeRepository::findById,
+                    unidade -> CampanhaUnidade.of(campanha, unidade)
+            );
+        }
+
+        ValidacaoPeriodoUtils.validarDataFinalPosterior(
+                campanha.getDtComecoCampanha(),
+                campanha.getDtFimCampanha()
+        );
+
+        validarCampanhaDuplicada(
+                campanha.getNmCampanha(),
+                campanha.getTipoVacina(),
+                campanha.getDtComecoCampanha(),
+                campanha.getDtFimCampanha(),
+                campanha.getCdCampanha()
+        );
+
+        campanhaRepository.save(campanha);
+    }
+
 
     private List<UnidadeSaude> buscarUnidadeSaude(List<Long> ids){
 
@@ -87,10 +139,15 @@ public class CampanhaServiceImpl implements CampanhaService {
                 .orElseThrow(() -> new RuntimeException("Vacina não encontrada"));
     }
 
-    private List<CampanhaUnidade> associarUnidades(Campanha campanha, List<UnidadeSaude> unidades) {
-        return unidades.stream()
-                .map(unidade -> CampanhaUnidade.of(campanha, unidade))
-                .toList();
+    //ver com o joão
+    private void validarCampanhaDuplicada(String nmCampanha, TipoVacina tipoVacina, LocalDate dtComeco, LocalDate dtFim, Long campanhaId){
+        boolean existe = campanhaRepository.existsByNmCampanhaAndTipoVacinaAndDtComecoCampanhaAndDtFimCampanhaAndCdCampanhaNot(
+                nmCampanha, tipoVacina, dtComeco, dtFim, campanhaId);
+
+        if (existe) {
+            throw new RuntimeException("Vacina já cadastrada");
+        }
     }
+
 
 }

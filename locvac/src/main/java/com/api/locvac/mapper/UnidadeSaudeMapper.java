@@ -14,7 +14,8 @@ public class UnidadeSaudeMapper {
                 dto.dsEndereco(),
                 dto.nmUnidade(),
                 dto.longitude(),
-                dto.latitude()
+                dto.latitude(),
+                dto.dsTelefone()
         );
     }
 
@@ -27,7 +28,8 @@ public class UnidadeSaudeMapper {
                 unidadeSaude.getLongitude(),
                 unidadeSaude.getNmUnidade(),
                 unidadeSaude.getNmCep(),
-                unidadeSaude.getDsEndereco()
+                unidadeSaude.getDsEndereco(),
+                unidadeSaude.getDsTelefone()
         );
     }
 }

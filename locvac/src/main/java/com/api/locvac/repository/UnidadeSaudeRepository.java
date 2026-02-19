@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UnidadeSaudeRepository extends JpaRepository<UnidadeSaude, Long> {
 
-    boolean existsByNmUnidadeIgnoreCaseAndNmCep(String nmUnidade, String nmCep);
+    boolean existsByNmUnidadeAndNmCepAndCdUnidadeNot(String nmUnidade, String nmCep, Long id);
     boolean existsById(Long unidadeId);
 
     Optional<UnidadeSaude> findUnidadeSaudeByNmUnidadeContainingIgnoreCase(String nmUnidade);

@@ -16,15 +16,25 @@ public class UnidadeSaude {
     private String nmUnidade;
     private String nmCep;
     private String dsEndereco;
+    private String dsTelefone;
 
     public UnidadeSaude() {}
 
-    public UnidadeSaude(String nmCep, String dsEndereco, String nmUnidade, Double longitude, Double latitude) {
-        this.nmCep = nmCep;
+    public UnidadeSaude(String dsEndereco, String nmCep, String nmUnidade, Double longitude, Double latitude, String dsTelefone) {
         this.dsEndereco = dsEndereco;
+        this.nmCep = nmCep;
         this.nmUnidade = nmUnidade;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.dsTelefone = dsTelefone;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public Long getCdUnidade() {
@@ -49,5 +59,9 @@ public class UnidadeSaude {
 
     public String getDsEndereco() {
         return dsEndereco;
+    }
+
+    public String getDsTelefone() {
+        return dsTelefone;
     }
 }

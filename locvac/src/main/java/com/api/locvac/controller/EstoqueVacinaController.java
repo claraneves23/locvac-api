@@ -1,5 +1,6 @@
 package com.api.locvac.controller;
 
+import com.api.locvac.dto.EstoqueVacinaPatchDTO;
 import com.api.locvac.dto.EstoqueVacinaRequestDTO;
 import com.api.locvac.dto.VacinaPorUnidadeResponseDTO;
 import com.api.locvac.service.EstoqueVacinaService;
@@ -26,12 +27,23 @@ public class EstoqueVacinaController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{unidadeId}/quantidade")
+    @GetMapping("/{unidadeId}/estoque")
     public List<VacinaPorUnidadeResponseDTO> listarEstoqueVacina(
             @PathVariable Long unidadeId) {
 
         return estoqueVacinaService.listarVacinasPorUnidade(unidadeId);
     }
+
+    @PatchMapping("/{vacinaId}/{unidadeId}/atualizarEstoque")
+    public ResponseEntity<Void> atualizarQuantidade(
+            @PathVariable Long vacinaId,
+            @PathVariable Long unidadeId,
+            @RequestBody EstoqueVacinaPatchDTO dto
+    ) {
+        estoqueVacinaService.atualizarQuantidadeEstoque(vacinaId, unidadeId, dto.quantidade());
+        return ResponseEntity.noContent().build();
+    }
+
 
     @DeleteMapping("/vacinas/{vacinaId}/unidades/{unidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

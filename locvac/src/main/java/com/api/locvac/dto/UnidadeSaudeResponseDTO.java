@@ -6,7 +6,9 @@ public record UnidadeSaudeResponseDTO(
         Double longitude,
         String nmUnidade,
         String nmCep,
-        String dsEndereco
+        String dsEndereco,
+        String dsTelefone
+
 ) {
 }
 

@@ -1,9 +1,8 @@
 package com.api.locvac.controller;
 
 import com.api.locvac.dto.TipoVacinaRequestDTO;
+import com.api.locvac.dto.TipoVacinaPatchDTO;
 import com.api.locvac.dto.TipoVacinaResponseDTO;
-import com.api.locvac.dto.UnidadeSaudeRequestDTO;
-import com.api.locvac.model.core.UnidadeSaude;
 import com.api.locvac.service.TipoVacinaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -47,5 +46,13 @@ public class TipoVacinaController {
     @GetMapping("/nome/{nomeVacina}")
     public ResponseEntity<TipoVacinaResponseDTO> filtrarPorNome(@PathVariable String nomeVacina){
         return ResponseEntity.ok(tipoVacinaService.filtrarPorNome(nomeVacina));
+    }
+
+    @PatchMapping("atualizaTipoVacina/{id}")
+    public ResponseEntity<Void> atualizarTipoVacina(
+            @PathVariable Long id,
+            @RequestBody TipoVacinaPatchDTO dto) {
+        tipoVacinaService.atualizarTipoVacina(id, dto);
+        return ResponseEntity.noContent().build();
     }
 }

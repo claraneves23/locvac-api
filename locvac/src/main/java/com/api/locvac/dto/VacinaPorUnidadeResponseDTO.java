@@ -11,7 +11,8 @@ public record VacinaPorUnidadeResponseDTO(
         Integer quantidade,
         List<String> faixaEtaria,
         List<String> restricoes,
-        List<String> cepas
+        List<String> cepas,
+        boolean disponibilidade
 ) {}
 
 

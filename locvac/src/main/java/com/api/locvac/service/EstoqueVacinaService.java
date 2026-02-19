@@ -9,7 +9,7 @@ public interface EstoqueVacinaService {
 
     void cadastrarEstoque(EstoqueVacinaRequestDTO dto);
 
-    void atualizarQuantidadeEstoque(EstoqueVacinaRequestDTO dto);
+    void atualizarQuantidadeEstoque(Long vacinaId, Long unidadeId, Integer quantidade);
 
     void removerVacinaDaUnidade(Long vacinaId, Long unidadeId);
 

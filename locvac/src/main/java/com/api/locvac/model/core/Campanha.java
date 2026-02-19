@@ -15,9 +15,6 @@ public class Campanha {
 
     private String nmCampanha;
 
-    @Column(columnDefinition = "TEXT")
-    private String dsCampanha;
-
     private LocalDate dtComecoCampanha;
     private LocalDate dtFimCampanha;
 
@@ -37,9 +34,26 @@ public class Campanha {
         this.tipoVacina = tipoVacina;
     }
 
-    public LocalDate getDtFimCampanha() {
-        return dtFimCampanha;
+    public void setTipoVacina(TipoVacina tipoVacina) {
+        this.tipoVacina = tipoVacina;
     }
+
+    public void setUnidades(List<CampanhaUnidade> unidades) {
+        this.unidades = unidades;
+    }
+
+    public void setDtComecoCampanha(LocalDate dtComecoCampanha) {
+        this.dtComecoCampanha = dtComecoCampanha;
+    }
+
+    public void setNmCampanha(String nmCampanha) {
+        this.nmCampanha = nmCampanha;
+    }
+
+    public void setDtFimCampanha(LocalDate dtFimCampanha) {
+        this.dtFimCampanha = dtFimCampanha;
+    }
+    public LocalDate getDtFimCampanha() {return dtFimCampanha;}
 
     public LocalDate getDtComecoCampanha() {
         return dtComecoCampanha;
@@ -55,10 +69,6 @@ public class Campanha {
 
     public TipoVacina getTipoVacina() {
         return tipoVacina;
-    }
-
-    public String getDsCampanha() {
-        return dsCampanha;
     }
 
     public List<CampanhaUnidade> getUnidades() {

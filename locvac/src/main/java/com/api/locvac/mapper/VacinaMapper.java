@@ -49,7 +49,8 @@ public class VacinaMapper {
                 estoque.getQuantidade(),
                 getFaixas(tipo),
                 getRestricoes(tipo),
-                getCepas(tipo)
+                getCepas(tipo),
+                estoque.getQuantidade() > 0
         );
     }
 
@@ -73,8 +74,6 @@ public class VacinaMapper {
                 .map(tc -> tc.getCepa().getNome())
                 .toList();
     }
-
-
 
 
 }
