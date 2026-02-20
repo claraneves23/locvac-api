@@ -217,4 +217,3 @@ Para configurar e executar a LocVac API em seu ambiente local, siga os passos ab
 
 ---
 
-**Autor:** Manus AI
